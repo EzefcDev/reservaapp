@@ -1,28 +1,39 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-container>
+      <CardReservation @click="save" :reservations="reservations" />
+
+      <TableReservation :reservations="reservations" />
+    </v-container>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TableReservation from "./components/TableReservation/TableReservation.vue";
+import CardReservation from "./components/CardReservation/CardReservation.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    TableReservation,
+    CardReservation,
+  },
+  data() {
+    return {
+      reservations: [],
+    };
+  },
+  methods: {
+    save(info) {
+      this.reservations.push(info)
+      localStorage.setItem('reservations', JSON.stringify(this.reservations))
+    },
+    getReservations(){
+        this.reservations = JSON.parse(localStorage.getItem("reservations")) ?? []
+    }
+  },
+  mounted(){
+   this.getReservations()
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
